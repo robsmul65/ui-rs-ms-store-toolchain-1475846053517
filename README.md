@@ -1,9 +1,9 @@
 ## Run on Bluemix
 
-* ```git clone https://hub.jazz.net/git/ajlohr/Microservices_UI```
-* ```cd Microservices_UI```
-* ```cf login```
-* ```cf push <name of your application>```
+* `git clone https://github.com/alohr51/Microservices-UI.git`
+* `cd Microservices-UI`
+* `cf login`
+* `cf push <name of your application>`
 
 ---
 ## More
