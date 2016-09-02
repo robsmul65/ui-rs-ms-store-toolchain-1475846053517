@@ -1,40 +1,32 @@
 <?php
-$services = getenv("VCAP_SERVICES");
-$services_json = json_decode($services, true);
+require_once("service-discovery.php");
 
-for ($i = 0; $i < sizeof($services_json["user-provided"]); $i++){
-	if ($services_json["user-provided"][$i]["name"] == "catalogAPI"){
-		$catalogHost = $services_json["user-provided"][$i]["credentials"]["host"];
-	}
-}
+// Get our Catalog API endpoint from Service Discovery
+$catalogRoute = getAPIRoute("Catalog-API");
 
-$parsedURL = parse_url($catalogHost);
-$catalogRoute = $parsedURL["scheme"] . "://" . $parsedURL["host"];
-
-function CallAPI($method, $url)
-{
-	$curl = curl_init();
-	curl_setopt($curl, CURLOPT_URL, $url);
-	curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-	$result = curl_exec($curl);
-	curl_close($curl);
-	return $result;
-}
-$result = CallApi("GET", $catalogRoute . "/items");
+// Get the products from our Catalog API
+$result = request("GET", $catalogRoute . "/items");
 ?>
 
 <script>
-var items = <?php echo $result?>;
+// Set "items" to the response from our Catalog API request.
+var items = <?php echo $result;?>
 
+// Take the item JSON received from the catalog API and format it nicely
 function loadItems(){
-	var i = 0;
-	console.log("Load Items: " + items.rows);
-	document.getElementById("loading").innerHTML = "";
-	for(i = 0; i < items.rows.length; ++i){
+	if(items.rows == undefined){
+		document.getElementById("loading").innerHTML = "";
+		return alert("Items is undefined. Please check that your catalog application is running. " + items);
+	}
+
+	for(var i = 0; i < items.rows.length; ++i){
 		addItem(items.rows[i].doc);
 	}
+
+	document.getElementById("loading").innerHTML = "";
 }
 
+// This function formats each item (product) using the JSON received from the catalog API app
 function addItem(item){
 	var div = document.createElement('div');
 	div.className = 'column';
@@ -46,16 +38,16 @@ function addItem(item){
 }
 
 function orderItem(itemID){
-	//create a random customer ID and count
+	// Create a random customer ID and count
 	var custID = Math.floor((Math.random() * 999) + 1); 
 	var count = Math.floor((Math.random() * 9999) + 1); 
-	var myjson = {"itemid": itemID, "customerid":custID, "count":count};
+	var order = {"itemid": itemID, "customerid":custID, "count":count};
 
 	$.ajax ({
 		type: "POST",
 		contentType: "application/json",
-		url: "submitOrders.php",
-		data: JSON.stringify(myjson),
+		url: "submit-orders.php",
+		data: JSON.stringify(order),
 		dataType: "json",
 		success: function( result ) {
 			if(result.httpCode != "201" && result.httpCode != "200"){
@@ -113,8 +105,5 @@ function orderItem(itemID){
 				<p>You can find the blog post associated with this demo <a href="https://developer.ibm.com/bluemix/2015/03/16/sample-application-using-microservices-bluemix/" target="_blank">here</a></p>
 		</div>
 	</div>
-	<script>
-		$(document).foundation();
-	</script>
 </body>
 </html>
