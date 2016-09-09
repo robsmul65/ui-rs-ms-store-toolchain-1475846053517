@@ -1,4 +1,4 @@
-<?
+<?php
 $services = getenv("VCAP_SERVICES");
 $services_json = json_decode($services, true);
 
