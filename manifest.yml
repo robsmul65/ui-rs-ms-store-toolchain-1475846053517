@@ -1,3 +1,5 @@
+-services:
+ - myMicroservicesServiceDiscovery
 name: MicroservicesUI
 memory: 256M
 instances: 1
