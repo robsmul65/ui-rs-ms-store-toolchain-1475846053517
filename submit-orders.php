@@ -7,9 +7,6 @@ $services_json = json_decode($services, true);
 // Get the orders application url route from service discovery
 $ordersRoute = getAPIRoute("Orders-API");
 
-// Set up the orders API endpont we want to hit
-$parsedURL = parse_url($ordersHost);
-$ordersRoute = $parsedURL["scheme"] . "://" . $parsedURL["host"];
 $ordersURL = $ordersRoute . "/rest/orders";
 
 function httpPost($data,$url){
