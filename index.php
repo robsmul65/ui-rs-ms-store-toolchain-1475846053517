@@ -74,6 +74,7 @@ function orderItem(itemID){
 	<title>Microservices Store | Demo</title>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation/6.2.2/foundation.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<link rel="shortcut icon" href="network-chart_32.png"/>
 </head>
 
 <body onload='loadItems()'>
