@@ -5,3 +5,4 @@ applications:
 name: MicroservicesUI
 memory: 256M
 instances: 1
+host: $CF_APP_NAME
