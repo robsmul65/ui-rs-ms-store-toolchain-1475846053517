@@ -88,7 +88,7 @@ function orderItem(itemID){
 	</div>
 
 	<div class="row column text-center">
-		<h2>Our Newest Products</h2>
+		<h2>Our oldest Products</h2>
 		<hr>
 	</div>
 	<div id='newItemWell' class="row small-up-2 large-up-4">
